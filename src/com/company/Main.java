@@ -4,6 +4,9 @@ import sun.awt.X11.Screen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 public class Main {
 
@@ -13,10 +16,23 @@ public class Main {
 
         myFrame.add(panel);
         myFrame.setVisible(true);
+
+        class TimeListener implements ActionListener{
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panel.move(4,1);
+            }
+        }
+
+
+        ActionListener listener = new TimeListener();
+        Timer timer = new Timer(50,listener);
+        timer.start();
     }
 }
 
-class LabFrame extends JFrame{
+class LabFrame extends JFrame {
   LabFrame(){
         super("Лабораторная работа №3");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,12 +41,19 @@ class LabFrame extends JFrame{
 
 }
 
-class MyPanel extends JPanel{
+class MyPanel extends JComponent{
+    private Rectangle rectangle;
+
     public MyPanel(){
-        repaint();
+        rectangle = new Rectangle(10,10,80,50);
     }
     public void paint(Graphics g){
-        g.setColor(Color.ORANGE);
-        g.fillRect(10,10,100,100);
+        Graphics2D graphics2D = (Graphics2D) g;
+        graphics2D.draw(rectangle);
+        graphics2D.fill(rectangle);
+    }
+    public void move(int x,int y){
+        rectangle.translate(x,y);
+        repaint();
     }
 }
